@@ -1,0 +1,37 @@
+{
+  "name": "if-action",
+  "description": "Actions SDK sample for Google App Engine",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "Google Inc.",
+  "engines": {
+    "node": "~4.2"
+  },
+  "scripts": {
+    "lint": "semistandard --fix \"**/app.js\"",
+    "start": "node app.js",
+    "monitor": "nodemon app.js",
+    "deploy": "gcloud app deploy",
+    "test": "npm run lint"
+  },
+  "semistandard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.13.4",
+    "actions-on-google": "^1.0.0",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "semistandard": "^9.1.0"
+  }
+}
