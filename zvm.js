@@ -6,7 +6,7 @@ ZVM - the ifvms.js Z-Machine (versions 5 and 8)
 Built: 2016-07-21
 
 Copyright (c) 2011-2016 The ifvms.js team
-BSD licenced
+MIT licenced
 http://github.com/curiousdannii/ifvms.js
 
 */
