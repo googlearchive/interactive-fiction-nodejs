@@ -10,13 +10,19 @@ This interactive fiction engine, is an action for the Google Assistant.
 
 See the developer guide and release notes at [https://developers.google.com/actions/](https://developers.google.com/actions/) for more details.
 
-### Steps
+### Steps for Actions SDK
+ 1. Deploy the actionsdk.js app to your preferred hosting environment (we recommend Google App Engine).
+ 1. Update the action package, action.json, with your endpoint URL.
+ 1. Preview the action using the gactions CLI: ./gactions preview --invocation_name "voice adventures" --preview_mins 1234
+ 1. Use the gactions simulator to test the action (try "talk to voice adventures"): ./gactions simulate
+
+### Steps for API.AI
  1. Create a new agent in API.AI [https://api.ai](https://api.ai).
  1. Click on the project gear icon to see the project settings.
  1. Select "Export and Import".
  1. Select "Restore from zip". Follow the directions to restore.
  1. Select the InteractiveFiction.zip file in this repo.
- 1. Deploy this app to your preferred hosting environment (we recommend Google App Engine).
+ 1. Deploy the app.js app to your preferred hosting environment (we recommend Google App Engine).
  1. Set the "Fulfillment" webhook URL to the hosting URL.
  1. Make sure all domains are turned off.
  1. Enable Actions on Google in the Integrations.

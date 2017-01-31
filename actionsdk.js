@@ -14,17 +14,16 @@
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
-const Assistant = require('actions-on-google').ApiAiAssistant;
+const ActionsSdkAssistant = require('actions-on-google').ActionsSdkAssistant;
 const express = require('express');
 const bodyParser = require('body-parser');
 const loadData = require('./zutils').loadData;
 const runnerFactory = require('./zutils').runnerFactory;
 
-const cmd = false;
-const inputs = [];
-
 // Example story: http://ifdb.tads.org/viewgame?id=mohwfk47yjzii14w
 const story = 'http://mirror.ifarchive.org/if-archive/games/zcode/LostPig.z8';
+
+const NO_INPUTS = ['I didn\'t hear that.', 'If you\'re still there, please repeat that.', 'See you next time.'];
 
 // [START YourAction]
 // Preload the story data before first action request
@@ -37,69 +36,37 @@ app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({type: 'application/json'}));
 
 app.post('/', (request, response) => {
-  const assistant = new Assistant({request: request, response: response});
-  console.log('Request headers: ' + JSON.stringify(request.headers));
-  console.log('Request body: ' + JSON.stringify(response.body));
-  const WELCOME_INTENT = 'input.welcome';
-  const UNKNOWN_INTENT = 'input.unknown';
-  const DIRECTION_INTENT = 'input.directions';
-  const DIRECTION_ARGUMENT = 'Directions';
-  const LOOK_INTENT = 'input.look';
+  console.log('handle post');
+  const assistant = new ActionsSdkAssistant({request: request, response: response});
 
   const runner = runnerFactory(story, assistant);
   if (runner === null) {
     throw new Error('Runner not found!');
   }
 
-  const welcomeIntent = (assistant) => {
-    console.log('welcomeIntent');
+  function mainIntent (assistant) {
+    console.log('mainIntent');
     runner.started = assistant.data.hasOwnProperty('restore');
     runner.start();
-  };
+  }
 
-  const unknownIntent = (assistant) => {
-    console.log('unknownIntent: ' + assistant.getRawInput());
+  function rawInput (assistant) {
+    console.log('rawInput');
     if (assistant.getRawInput() === 'quit') {
-      assistant.data.restore = null;
       assistant.tell('Goodbye!');
     } else {
       assistant.mappedInput = assistant.getRawInput();
       runner.start();
     }
-  };
-
-  const directionsIntent = (assistant) => {
-    const direction = assistant.getArgument(DIRECTION_ARGUMENT);
-    console.log('directionsIntent: ' + direction);
-    assistant.mappedInput = 'go ' + direction;
-    runner.start();
-  };
-
-  const lookIntent = (assistant) => {
-    console.log('lookIntent');
-    assistant.mappedInput = 'look';
-    runner.start();
-  };
+  }
 
   const actionMap = new Map();
-  actionMap.set(WELCOME_INTENT, welcomeIntent);
-  actionMap.set(UNKNOWN_INTENT, unknownIntent);
-  actionMap.set(DIRECTION_INTENT, directionsIntent);
-  actionMap.set(LOOK_INTENT, lookIntent);
+  actionMap.set(assistant.StandardIntents.MAIN, mainIntent);
+  actionMap.set(assistant.StandardIntents.TEXT, rawInput);
 
-  const url = request.query.url;
-  if (url) {
-    loadData(url, (data) => {
-      console.log('custom data: ' + url);
-      runner.run(() => {
-        assistant.handleRequest(actionMap);
-      });
-    }, true);
-  } else {
-    runner.run(() => {
-      assistant.handleRequest(actionMap);
-    });
-  }
+  runner.run(() => {
+    assistant.handleRequest(actionMap);
+  });
 });
 // [END YourAction]
 

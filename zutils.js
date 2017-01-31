@@ -29,6 +29,7 @@ const cmd = false;
 const inputs = [];
 const YES = 'y';
 const NO_INPUTS = ['I didn\'t hear that.', 'If you\'re still there, please repeat that.', 'See you next time.'];
+const HELP = 'You can say things like go, inventory or examine. What do you want to do?';
 
 // Cache the story data
 let storyData = null;
@@ -60,9 +61,9 @@ const textToArray = (text, array) => {
 };
 
 // Load the story file from a URL or a local file
-const loadData = (story, callback) => {
+const loadData = (story, callback, reload) => {
   console.log('loadData: ' + story);
-  if (storyData) {
+  if (!reload && storyData) {
     console.log('loadData: cached');
     callback(storyData);
     return;
@@ -248,7 +249,7 @@ class ZvmRunner {
                 response = this.subtitle + '. ' + response;
               }
               if (this.title) {
-                response = 'Welcome to your voice adventure called ' + this.title + '. ' + response;
+                response = 'Welcome to your voice adventure called ' + this.title + '. ' + response + ' ' + HELP;
               }
             }
             if (this.restarting) {
@@ -268,7 +269,11 @@ class ZvmRunner {
               if (this.data) {
                 this.assistant.data.restore = this.data;
               }
-              this.assistant.ask(response, NO_INPUTS);
+              if (this.assistant.getApiVersion) {
+                this.assistant.ask(this.assistant.buildInputPrompt(false, response, NO_INPUTS));
+              } else {
+                this.assistant.ask(response, NO_INPUTS);
+              }
             } else {
                 // Persist state for each request
               this.saving = true;
