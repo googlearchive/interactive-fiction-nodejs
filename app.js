@@ -14,7 +14,7 @@
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
-const Assistant = require('actions-on-google').ApiAiAssistant;
+const ApiAiApp = require('actions-on-google').ApiAiApp;
 const express = require('express');
 const bodyParser = require('body-parser');
 const loadData = require('./zutils').loadData;
@@ -32,12 +32,12 @@ loadData(story, (data) => {
   console.log('preloaded data: ' + story);
 });
 
-const app = express();
-app.set('port', (process.env.PORT || 8080));
-app.use(bodyParser.json({type: 'application/json'}));
+const expressApp = express();
+expressApp.set('port', (process.env.PORT || 8080));
+expressApp.use(bodyParser.json({type: 'application/json'}));
 
-app.post('/', (request, response) => {
-  const assistant = new Assistant({request: request, response: response});
+expressApp.post('/', (request, response) => {
+  const app = new ApiAiApp({request: request, response: response});
   console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(response.body));
   const WELCOME_INTENT = 'input.welcome';
@@ -46,38 +46,38 @@ app.post('/', (request, response) => {
   const DIRECTION_ARGUMENT = 'Directions';
   const LOOK_INTENT = 'input.look';
 
-  const runner = runnerFactory(story, assistant);
+  const runner = runnerFactory(story, app);
   if (runner === null) {
     throw new Error('Runner not found!');
   }
 
-  const welcomeIntent = (assistant) => {
+  const welcomeIntent = (app) => {
     console.log('welcomeIntent');
-    runner.started = assistant.data.hasOwnProperty('restore');
+    runner.started = app.data.hasOwnProperty('restore');
     runner.start();
   };
 
-  const unknownIntent = (assistant) => {
-    console.log('unknownIntent: ' + assistant.getRawInput());
-    if (assistant.getRawInput() === 'quit') {
-      assistant.data.restore = null;
-      assistant.tell('Goodbye!');
+  const unknownIntent = (app) => {
+    console.log('unknownIntent: ' + app.getRawInput());
+    if (app.getRawInput() === 'quit') {
+      app.data.restore = null;
+      app.tell('Goodbye!');
     } else {
-      assistant.mappedInput = assistant.getRawInput();
+      app.mappedInput = app.getRawInput();
       runner.start();
     }
   };
 
-  const directionsIntent = (assistant) => {
-    const direction = assistant.getArgument(DIRECTION_ARGUMENT);
+  const directionsIntent = (app) => {
+    const direction = app.getArgument(DIRECTION_ARGUMENT);
     console.log('directionsIntent: ' + direction);
-    assistant.mappedInput = 'go ' + direction;
+    app.mappedInput = 'go ' + direction;
     runner.start();
   };
 
-  const lookIntent = (assistant) => {
+  const lookIntent = (app) => {
     console.log('lookIntent');
-    assistant.mappedInput = 'look';
+    app.mappedInput = 'look';
     runner.start();
   };
 
@@ -92,12 +92,12 @@ app.post('/', (request, response) => {
     loadData(url, (data) => {
       console.log('custom data: ' + url);
       runner.run(() => {
-        assistant.handleRequest(actionMap);
+        app.handleRequest(actionMap);
       });
     }, true);
   } else {
     runner.run(() => {
-      assistant.handleRequest(actionMap);
+      app.handleRequest(actionMap);
     });
   }
 });
@@ -106,11 +106,11 @@ app.post('/', (request, response) => {
 if (module === require.main) {
   // [START server]
   // Start the server
-  const server = app.listen(process.env.PORT || 8080, () => {
+  const server = expressApp.listen(process.env.PORT || 8080, () => {
     const port = server.address().port;
     console.log('App listening on port %s', port);
   });
   // [END server]
 }
 
-module.exports = app;
+module.exports = expressApp;
