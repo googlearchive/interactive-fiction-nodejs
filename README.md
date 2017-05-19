@@ -1,4 +1,4 @@
-# Actions on Google Interactive Fiction Sample using Node.js
+# Actions on Google: Interactive Fiction Sample using Node.js
 
 This interactive fiction engine, is an app for the Google Assistant.
 
