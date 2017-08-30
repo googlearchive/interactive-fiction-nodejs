@@ -39,7 +39,7 @@ expressApp.use(bodyParser.json({type: 'application/json'}));
 expressApp.post('/', (request, response) => {
   const app = new ApiAiApp({request: request, response: response});
   console.log('Request headers: ' + JSON.stringify(request.headers));
-  console.log('Request body: ' + JSON.stringify(response.body));
+  console.log('Request body: ' + JSON.stringify(request.body));
   const WELCOME_INTENT = 'input.welcome';
   const UNKNOWN_INTENT = 'input.unknown';
   const DIRECTION_INTENT = 'input.directions';
