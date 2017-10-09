@@ -6,29 +6,29 @@ This interactive fiction engine, is an app for the Google Assistant.
 
 ### Steps for Actions SDK
 1. Use the [Actions on Google Console](https://console.actions.google.com) to add a new project with a name of your choosing.
-1. Choose "Actions SDK"
+1. Under *Build a custom app*, click *BUILD* in the Actions SDK box.
 1. Deploy this the `actionsdk.js` app to your preferred hosting environment
 (we recommend [Google Cloud Functions](https://cloud.google.com/functions/docs/tutorials/http)).
 1. Update the action package, action.json, with your endpoint URL.
 1. Use the gActions CLI to complete the command shown in the Actions console.
-1. Click "OK" in the Actions console.
+1. Click *OK* in the Actions console.
 1. Open the Simulator in the Actions console.
-1. Type "Talk to my test app" in the simulator, or say "OK Google, talk to my test app" to any Actions on Google enabled device signed into your developer account.
+1. Type `Talk to my test app` in the simulator, or say `OK Google, talk to my test app` to any Actions on Google enabled device signed into your developer account.
 
-### Steps for API.AI
+### Steps for Dialogflow
 1. Use the [Actions on Google Console](https://console.actions.google.com) to add a new project with a name of your choosing.
-1. Click "Use API.AI" and then "Create Actions on API.AI".
-1. Click "Save" to save the project.
+1. Under *Build a custom app*, click *BUILD* in the Dialogflow box and then click *Create Actions on Dialogflow*.
+1. Click *Save* to save the project.
 1. Click on the gear icon to see the project settings.
-1. Select "Export and Import".
-1. Select "Restore from zip". Follow the directions to restore from the InteractiveFiction.zip in this repo.
-1. Deploy the app.js app to your preferred hosting environment (we recommend Google App Engine).
-1. In the Fulfillment page of the API.AI console, enable Webhook, set the URL to the hosting URL, then save.
-1. Open API.AI's Integrations page, open the Settings menu for Actions on Google, then click Test.
+1. Select *Export and Import*.
+1. Select *Restore from zip*. Follow the directions to restore from the InteractiveFiction.zip in this repo.
+1. Deploy the `app.js` app to your preferred hosting environment (we recommend Google App Engine).
+1. In the Fulfillment page of the Dialogflow console, enable Webhook, set the URL to the hosting URL, then save.
+1. Open Dialogflow's Integrations page, open the Settings menu for Actions on Google, then click Test.
 1. Click View to open the Actions on Google simulator.
-1. Type "Talk to my test app" in the simulator, or say "OK Google, talk to my test app" to any Actions on Google enabled device signed into your developer account.
+1. Type `Talk to my test app` in the simulator, or say `OK Google, talk to my test app` to any Actions on Google enabled device signed into your developer account.
 
-For more detailed information on deployment, see the [documentation](https://developers.google.com/actions/apiai/deploy-fulfillment).
+For more detailed information on deployment, see the [documentation](https://developers.google.com/actions/dialogflow/deploy-fulfillment).
 
 ## References and How to report bugs
 * Actions on Google documentation: [https://developers.google.com/actions/](https://developers.google.com/actions/).

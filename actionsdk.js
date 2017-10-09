@@ -14,11 +14,10 @@
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
-const ActionsSdkApp = require('actions-on-google').ActionsSdkApp;
+const { ActionsSdkApp } = require('actions-on-google');
 const express = require('express');
 const bodyParser = require('body-parser');
-const loadData = require('./zutils').loadData;
-const runnerFactory = require('./zutils').runnerFactory;
+const { loadData, runnerFactory } = require('./zutils');
 
 // Example story: http://ifdb.tads.org/viewgame?id=mohwfk47yjzii14w
 const story = 'http://mirror.ifarchive.org/if-archive/games/zcode/LostPig.z8';

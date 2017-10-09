@@ -14,11 +14,10 @@
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
-const ApiAiApp = require('actions-on-google').ApiAiApp;
+const { DialogflowApp } = require('actions-on-google');
 const express = require('express');
 const bodyParser = require('body-parser');
-const loadData = require('./zutils').loadData;
-const runnerFactory = require('./zutils').runnerFactory;
+const { loadData, runnerFactory } = require('./zutils');
 
 const cmd = false;
 const inputs = [];
@@ -37,7 +36,7 @@ expressApp.set('port', (process.env.PORT || 8080));
 expressApp.use(bodyParser.json({type: 'application/json'}));
 
 expressApp.post('/', (request, response) => {
-  const app = new ApiAiApp({request: request, response: response});
+  const app = new DialogflowApp({request: request, response: response});
   console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(request.body));
   const WELCOME_INTENT = 'input.welcome';
