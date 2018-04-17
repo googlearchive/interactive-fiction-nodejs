@@ -1,3 +1,7 @@
+# Project Status
+
+This sample is no longer maintained. It's here for archive purposes only.
+
 # Actions on Google: Interactive Fiction Sample using Node.js
 
 This interactive fiction engine, is an app for the Google Assistant.
